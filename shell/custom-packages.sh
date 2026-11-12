@@ -25,8 +25,14 @@ snmpd-nossl"
 # 网络工具
 ############################
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
-curl \
-bxplug"
+curl"
+# 根据开关决定是否加入 bxplug
+if [ "$INCLUDE_BXPLUG" = "true" ]; then
+  echo ">>> Including bxplug"
+  CUSTOM_PACKAGES="$CUSTOM_PACKAGES bxplug"
+else
+  echo ">>> Skipping bxplug"
+fi
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 # luci-app-nlbwmon \
 # luci-i18n-nlbwmon-zh-cn"
