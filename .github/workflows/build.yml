@@ -31,6 +31,11 @@ on:
         required: true
         type: boolean
         default: true
+      include_bxplug:
+        description: "Include bxplug"
+        required: true
+        type: boolean
+        default: true
 permissions:
   contents: write
 jobs:
@@ -49,6 +54,7 @@ jobs:
           echo "RootFS Size      : ${{ github.event.inputs.rootfs_size }} MB"
           echo "IP Mode          : ${{ github.event.inputs.ip_mode }}"
           echo "Include OpenClash: ${{ github.event.inputs.include_openclash }}"
+          echo "Include bxplug   : ${{ github.event.inputs.include_bxplug }}"
           echo "===================================="
 
       - name: Validate OpenWrt Version
@@ -203,6 +209,7 @@ jobs:
 
       # ====================== 准备自定义 APK ======================
       - name: Prepare Custom APK Packages
+        if: ${{ github.event.inputs.include_bxplug == 'true' }}
         run: |
           set -e
           IB_DIR=$(find openwrt -maxdepth 1 -type d -name 'openwrt-imagebuilder-*' | head -n 1)
@@ -259,10 +266,12 @@ jobs:
         
           ROOTFS_SIZE="${{ github.event.inputs.rootfs_size }}"
           INCLUDE_OPENCLASH="${{ github.event.inputs.include_openclash }}"
+          INCLUDE_BXPLUG="${{ github.event.inputs.include_bxplug }}"
           
           # 这里执行脚本
           chmod +x ../../shell/custom-packages.sh
           export INCLUDE_OPENCLASH
+          export INCLUDE_BXPLUG
           source ../../shell/custom-packages.sh
           echo "CUSTOM_PACKAGES=$CUSTOM_PACKAGES"
           echo "Starting build with ROOTFS_PARTSIZE=$ROOTFS_SIZE ..."
