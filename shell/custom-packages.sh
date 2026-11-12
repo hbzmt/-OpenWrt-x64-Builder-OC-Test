@@ -1,12 +1,8 @@
-
 #!/bin/bash
-
 CUSTOM_PACKAGES=""
-
 ############################
 # 基础系统
 ############################
-
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 luci \
 luci-ssl \
@@ -14,38 +10,32 @@ luci-i18n-base-zh-cn \
 luci-i18n-package-manager-zh-cn \
 luci-i18n-firewall-zh-cn \
 openssh-sftp-server"
-
 ############################
 # 系统工具
 ############################
-
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 snmpd-nossl"
-
 # 需要启用 ttyd 时，取消下面整段的注释
 #
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 # ttyd \
 # luci-app-ttyd \
 # luci-i18n-ttyd-zh-cn"
-
 ############################
 # 网络工具
 ############################
-
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 curl \
 bxplug"
-
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 # luci-app-nlbwmon \
 # luci-i18n-nlbwmon-zh-cn"
-
 ############################
-# OpenClash
+# OpenClash（根据开关决定是否加入）
 ############################
-
-CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
+if [ "$INCLUDE_OPENCLASH" = "true" ]; then
+  echo ">>> Including OpenClash packages"
+  CUSTOM_PACKAGES="$CUSTOM_PACKAGES \
 luci-app-openclash \
 luci-compat \
 kmod-tun \
@@ -60,9 +50,10 @@ ca-bundle \
 dnsmasq-full \
 ruby \
 ruby-yaml"
-
+else
+  echo ">>> Skipping OpenClash packages"
+fi
 ############################
 # 输出软件包列表
 ############################
-
 echo "$CUSTOM_PACKAGES"
