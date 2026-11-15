@@ -25,7 +25,7 @@ on:
       rootfs_size:
         description: "RootFS Size (MB)"
         required: true
-        default: "2048"
+        default: "1024"
       include_openclash:
         description: "Include OpenClash (Meta kernel + luci-app-openclash)"
         required: true
